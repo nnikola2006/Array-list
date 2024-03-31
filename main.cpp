@@ -1,32 +1,34 @@
 #include <iostream>
 #include <cctype>
 using std::cout, std::cin, std::endl;
+using std::string;
 
+template <typename T>
 class ArrayList{
 private:
-    int *arr;
+    T *arr;
     int size;
     int capacity;
 public:
     ArrayList(const int capacity){
         this->capacity = capacity;
         this->size = 0;
-        this->arr = new int[capacity];
+        this->arr = new T[capacity];
 
         for(int i = 0; i < capacity; i++){
             arr[i] = 0;
         }
     }
-    void add(const int element){
+    void add(const T element){
         if(size < capacity){
             arr[size] = element;
             size++;
         }
         else{
             const int newCapacity = capacity * 2;
-            int *temp;
+            T *temp;
             try{
-                temp = new int[capacity];
+                temp = new T[capacity];
 
                 for(int i = 0; i < size; i++){
                     temp[i] = arr[i];
@@ -81,6 +83,34 @@ public:
     }
 };
 
+int arrayType(){
+    unsigned int type = 0;
+    while(type < 1 || type > 5){
+        cout << "\033[2J\033[01;1H"; // works for vscode
+        cout << "Welcome to the ArrayList program" << endl;
+        cout << "Choose what type of array do you want?: " << endl;
+        cout << "1. Integer" << endl;
+        cout << "2. Double" << endl;
+        cout << "3. Char" << endl;
+        cout << "4. String" << endl;
+        cout << "5. Exit" << endl;
+    }
+    
+    return type;
+}
+
+template <typename T>
+void createArrayType(){
+    unsigned int capacity = 0;
+    capacityInput(capacity);
+    ArrayList<T> list(capacity);
+}
+
+void capacityInput(unsigned int &capacity){
+    cout << "How much capacity does the list have?: ";
+    cin >> capacity;
+}
+
 void printMenu(){
     cout << endl;
     cout << "Choose what you want to do with the list: " << endl;
@@ -93,16 +123,21 @@ void printMenu(){
 }
 
 int main(){
-    cout << "How much capacity does the list have?: ";
+    unsigned int type = arrayType();
+    if(type == 5){
+        cout << "Exiting..." << endl;
+        return 0;
+    }
+
     unsigned int capacity = 0;
-    cin >> capacity;
-    ArrayList list(capacity);
+    capacityInput(capacity);
+    ArrayList<int> list(capacity);
 
     unsigned int option = 0;
     while(option != 6){
         printMenu();
         cin >> option;
-        //cout << "\033[2J\033[01;1H"; // works for vscode
+        cout << "\033[2J\033[01;1H"; // works for vscode
 
         if(!(option > 0 && option <= 5)){
             cout << "Invalid option" << endl;
